@@ -2,13 +2,17 @@
   <div id="home">
     <nav-bar class="home-nav"><template #center>购物车</template></nav-bar>
     <home-swiper :banners="banners"></home-swiper>
+    <recommend-view :recommends="recommends"></recommend-view>
+    
   </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue'
 import HomeSwiper from './childComps/HomeSwiper.vue'
+import RecommendView from './childComps/RecommendView.vue'
 import {getHomeMultidata} from 'network/home'
+
 
 
 
@@ -16,7 +20,8 @@ export default {
     name: "Home",
     components: {
       NavBar,
-      HomeSwiper
+      HomeSwiper,
+      RecommendView
     },
     data() {
       return {
@@ -30,7 +35,7 @@ export default {
       getHomeMultidata().then(res => {
         console.log(res);
         this.banners =res.data.banner.list
-        this.recommends = res.data.recommend
+        this.recommends = res.data.recommend.list
       })
     }
 
