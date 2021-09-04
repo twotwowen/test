@@ -20,6 +20,9 @@ export default {
     /* background-color: var(--color-tint); */
     text-align: center;
     box-shadow: 0 1px 1px rgb(100, 100, 100,.1);
+    
+
+   
   }
   .left,.right {
     width: 60px;
