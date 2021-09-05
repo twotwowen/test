@@ -26,6 +26,9 @@ export default {
     itemClick(index) {
       console.log(index);
       this.currentindex =index
+      //向外面发送事件，括号里面记得添加元素
+      //把index也发送出去
+      this.$emit('tabClick',index)
 
     }
   }

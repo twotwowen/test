@@ -1,86 +1,18 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><template #center>购物车</template></nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control :title="['流行','商品','精选']"></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <scroll class="content" ref="scroll">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control :title="['流行','商品','精选']" @tabClick="tabClick"></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
 
-    <ul>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-       <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-       <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-    </ul>
+    </scroll>
+    <!-- 想要监听组件的点击必须加上native -->
+    <!-- .native - 监听组件根元素的原生事件。 
+主要是给自定义的组件添加原生事件。 -->
+    <back-top @click.native="backClick"></back-top>
   </div>
 </template>
 
@@ -89,6 +21,8 @@
 import NavBar from 'components/common/navbar/NavBar.vue'
 import TabControl from 'components/content/tabControl/TabControl.vue'
 import GoodsList from 'components/content/goods/GoodsList.vue'
+import Scroll from 'components/common/scroll/Scroll.vue'
+import BackTop from 'components/content/backTop/BackTop.vue'
 
 //home里面子组件
 import HomeSwiper from './childComps/HomeSwiper.vue'
@@ -99,10 +33,6 @@ import FeatureView from './childComps/FeatureView.vue'
 import {getHomeMultidata,getHomeGoods} from 'network/home'
 
 
-
-
-
-
 export default {
     name: "Home",
     components: {
@@ -110,13 +40,12 @@ export default {
       NavBar,
       TabControl,
       GoodsList,
-
-
+      Scroll,
+      BackTop,
       //home里面子组件
       HomeSwiper,
       RecommendView,
       FeatureView,
-        
       
     },
     data() {
@@ -146,6 +75,29 @@ export default {
       this.getHomeGoods('sell')
     },
     methods:{
+      backClick() {
+        console.log('点击了返回top');
+        this.$refs.scroll.scrollTo(0,0)
+      },
+
+
+      //接受tabControl
+      tabClick(index) {
+        switch(index) {
+          case 0:
+            this.currentType = 'pop'
+            break
+            case 1:
+            this.currentType = 'new'
+            break
+            case 2:
+            this .currentType = 'sell'
+            break
+        }
+      },
+
+
+      //请求数据
       getHomeMultidata() {
          getHomeMultidata().then(res => {
         console.log(res);
@@ -166,9 +118,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #home {
-    padding-top: 44px;
+    /* padding-top: 44px; */
+    /* vh视口高度 ,100% */
+    height: 100vh;
+    position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -183,4 +138,16 @@ export default {
     top: 0;
     z-index: 9;
   }
+  .content {
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+  }
+  /* .content {
+    margin-top: 44px;
+    height: calc(100% - 93px);
+  } */
 </style>
