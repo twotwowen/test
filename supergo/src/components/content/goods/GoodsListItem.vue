@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <a :href="goodsitem.link"><img :src="goodsitem.show.img" alt=""></a>
+    <a :href="goodsitem.link"><img :src="goodsitem.show.img" alt="" ></a>
     <div class="goods-info">
       <p>{{goodsitem.title}}</p>
       <span class="price">{{goodsitem.price}}</span>
@@ -20,6 +20,12 @@ export default {
         return {}
       }
     }
+  },
+  methods:{
+    // itemimgload() {
+    //   console.log('imgload');
+    //   this.$bus.$emit('itemimgload')
+    // }
   }
 }
 </script>

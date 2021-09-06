@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><template #center>购物车</template></nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp = "loadMore">
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -12,7 +12,7 @@
     <!-- 想要监听组件的点击必须加上native -->
     <!-- .native - 监听组件根元素的原生事件。 
 主要是给自定义的组件添加原生事件。 -->
-    <back-top @click.native="backClick"></back-top>
+    <back-top @click.native="backClick" v-show="isShow"></back-top>
   </div>
 </template>
 
@@ -57,7 +57,8 @@ export default {
           'new':{page:0,list:[]},
           'sell':{page:0,list:[]}
         },
-        currentType:'pop'
+        currentType:'pop',
+        isShow:false
       }
     },
     computed:{
@@ -73,6 +74,11 @@ export default {
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
+
+      //监听item中图片加载完成
+      // this.$bus.$on('itemimgload',() => {
+      //   this.$refs.scroll.scroll.refresh()
+      // })
     },
     methods:{
       backClick() {
@@ -80,7 +86,15 @@ export default {
         this.$refs.scroll.scrollTo(0,0)
       },
 
-
+      //监听滚动，BackTop显示或隐藏
+      contentScroll(position) {
+        this.isShow = (-position.y) >1000
+      },
+      //监听上拉加载更多
+      loadMore() {
+        this.getHomeGoods(this.currentType)
+       
+      },
       //接受tabControl
       tabClick(index) {
         switch(index) {
@@ -111,7 +125,11 @@ export default {
         console.log(res);
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+        //完成上拉加载更多  可封装在pullingUp里面
+        this.$refs.scroll.scroll.finishPullUp()
+        console.log('已加载数据');
       })
+      
       }
     }
 
