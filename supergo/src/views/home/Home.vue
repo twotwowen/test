@@ -1,11 +1,12 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><template #center>购物车</template></nav-bar>
+    <tab-control :title="['流行','商品','精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control" v-show="isTabFixed"></tab-control>
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp = "loadMore">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @imgload="imgload"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
-      <tab-control :title="['流行','商品','精选']" @tabClick="tabClick"></tab-control>
+      <tab-control :title="['流行','商品','精选']" @tabClick="tabClick" ref="tabControl2"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
 
     </scroll>
@@ -31,6 +32,7 @@ import FeatureView from './childComps/FeatureView.vue'
 
 //网络请求
 import {getHomeMultidata,getHomeGoods} from 'network/home'
+import { onActivated } from '@vue/runtime-core'
 
 
 export default {
@@ -58,14 +60,18 @@ export default {
           'sell':{page:0,list:[]}
         },
         currentType:'pop',
-        isShow:false
+        isShow:false,
+        tabOffsetTop:0,
+        isTabFixed:false,
+        saveY:0
       }
     },
     computed:{
       showGoods(){
         //要拿对象里面的键obj['键']
         return this.goods[this.currentType].list
-      }
+      },
+     
     },
     created() {
       //请求多个数据
@@ -80,6 +86,23 @@ export default {
       //   this.$refs.scroll.scroll.refresh()
       // })
     },
+    unmounted() {//原来的destroyed钩子
+      console.log('destroyed');
+    },
+   
+    //当组件在 <keep-alive> 内被切换，它的 activated 和 deactivated 这两个生命周期钩子函数将会被对应执行。
+    //新版BScroll的bug已修复
+     activated() {
+      console.log('activated');
+      this.$refs.scroll.scrollTo(0,this.saveY,1)
+      this.$refs.scroll.scroll.refresh()
+    },
+    deactivated() {
+      console.log('deactivated');
+      //console.log(this.$refs.scroll.scroll);
+      this.saveY = this.$refs.scroll.scroll.y
+      console.log(this.saveY);
+    },
     methods:{
       backClick() {
         console.log('点击了返回top');
@@ -88,12 +111,20 @@ export default {
 
       //监听滚动，BackTop显示或隐藏
       contentScroll(position) {
+        //1.判断BackTop是否显示
         this.isShow = (-position.y) >1000
+
+        //2.判断tabControl是否吸顶
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       //监听上拉加载更多
       loadMore() {
         this.getHomeGoods(this.currentType)
        
+      },
+      imgload() {
+        console.log(this.$refs.tabControl2.$el.offsetTop);
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
       //接受tabControl
       tabClick(index) {
@@ -108,6 +139,10 @@ export default {
             this .currentType = 'sell'
             break
         }
+        //$refs可以拿到组件，组件data里面有currentIndex
+        console.log( this.$refs.tabControl1);
+          this.$refs.tabControl1.currentindex = index 
+           this.$refs.tabControl2.currentindex = index 
       },
 
 
@@ -148,12 +183,16 @@ export default {
     color: #fff;
     font-weight: 700;
 
-
-    position: fixed;
-    /* 添加定位要加方位 */
+    /* 没有滚动，不用加定位 */
+    /* position: fixed;
+    添加定位要加方位
     left: 0;
     right: 0;
     top: 0;
+    z-index: 9; */
+  }
+  .tab-control {
+    position: relative;
     z-index: 9;
   }
   .content {

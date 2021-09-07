@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <a :href="goodsitem.link"><img :src="goodsitem.show.img" alt="" ></a>
+  <div class="goods-item" @click="itemClick">
+   <img :src="goodsitem.show.img" alt="">
     <div class="goods-info">
       <p>{{goodsitem.title}}</p>
       <span class="price">{{goodsitem.price}}</span>
@@ -10,8 +10,24 @@
 </template>
 
 <script>
+import {useRoute,useRouter} from 'vue-router'
+
 export default {
   name: 'GoodsListItem',
+  setup (props) {
+    const router =useRouter()
+    const itemClick = (() => {
+      //由于setup内部是不能用this的，你的props并不能在setup内部方法里用this.xx去拿到，setup接受两个参数props和context
+      router.push("/detail/"+ props.goodsitem.iid)
+      // router.push({
+      //   path:'/detail',
+      //   query:props.goodsitem.iid
+      // })
+    })
+    return{
+      itemClick
+    }
+  },
   //记得props要加s！！！！！
   props:{
     goodsitem:{
@@ -22,9 +38,12 @@ export default {
     }
   },
   methods:{
-    // itemimgload() {
-    //   console.log('imgload');
-    //   this.$bus.$emit('itemimgload')
+    // itemClick() {
+    //   console.log('详情页');
+    //   console.log(this.$router);
+     
+    //   // this.$emit('itemClick')
+
     // }
   }
 }

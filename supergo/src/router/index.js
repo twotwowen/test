@@ -11,14 +11,22 @@ const Cart = () =>
     import ('../views/cart/Cart.vue')
 const Profile = () =>
     import ('../views/profile/Profile.vue')
+const Detail = () =>
+    import ('../views/detail/Detail.vue')
 
 const routes = [{
         path: '',
-        redirect: '/home'
+        redirect: '/home',
+        // meta: {
+        //     keepAlive: true
+        // }
     },
     {
         path: '/home',
-        component: Home
+        component: Home,
+        // meta: {
+        //     keepAlive: true
+        // }
     },
     {
         path: '/category',
@@ -32,7 +40,12 @@ const routes = [{
         path: '/profile',
         component: Profile
     },
+    {
+        path: '/detail/:iid',
+        component: Detail
+    }
 ]
+
 
 const router = createRouter({
     history: createWebHistory(),

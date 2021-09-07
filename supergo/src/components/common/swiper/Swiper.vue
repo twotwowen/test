@@ -50,7 +50,7 @@
 
         // 2.开启定时器
         this.startTimer();
-      }, 6000)
+      }, 500)
     },
     methods: {
 		  /**
@@ -65,7 +65,7 @@
       stopTimer: function () {
         window.clearInterval(this.playTimer);
       },
-
+     
       /**
        * 滚动到正确的位置
        */
@@ -209,7 +209,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
   #hy-swiper {
     overflow: hidden;
     position: relative;
