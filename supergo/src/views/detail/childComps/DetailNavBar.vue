@@ -6,7 +6,7 @@
       </template>
       <template #center>
         <div class="title">
-          <div v-for="(item,index) in title" :key="index" class="titleitem" :class="{active:ncurrentindex===index}" @click="itemClick(index)">{{item}}</div>
+          <div v-for="(item,index) in title" :key="index" class="titleitem" :class="{active:ncurrentIndex===index}" @click="itemClick(index)">{{item}}</div>
         </div>
       </template>
     </nav-bar>
@@ -20,18 +20,25 @@ import NavBar from 'components/common/navbar/NavBar.vue'
 
 export default {
   name: 'DetailNavBar',
+  props:{
+    type:Array,
+    default() {
+      return []
+    }
+  },
   components:{
     NavBar
   },
   data() {
     return {
       title:['商品','参数','评论','推荐'],
-      ncurrentindex:0
+      ncurrentIndex:0
     }
   },
   methods:{
     itemClick(index) {
-      this.ncurrentindex = index
+      this.ncurrentIndex = index
+      this.$emit('itemClick',index)
     },
     backClick() {
       console.log('点击了返回');

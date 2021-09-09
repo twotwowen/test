@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-   <img :src="goodsitem.show.img" alt="">
+   <img :src="showImage" alt="">
     <div class="goods-info">
       <p>{{goodsitem.title}}</p>
       <span class="price">{{goodsitem.price}}</span>
@@ -37,6 +37,11 @@ export default {
       }
     }
   },
+  computed: {
+    showImage() {
+      return this.goodsitem.image || this.goodsitem.show.img
+    }
+  },
   methods:{
     // itemClick() {
     //   console.log('详情页');
@@ -49,7 +54,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .goods-item {
     /* flex: 1; */
     position: relative;

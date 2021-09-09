@@ -39,7 +39,7 @@ export default {
   watch: {
     detailInfo() {
       //获取图片个数
-      this.imagesLength = this.detailInfo.detailImage[0].listlength
+      this.imagesLength = this.detailInfo.detailImage[0].list.length
     }
   }
 }

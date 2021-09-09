@@ -3,12 +3,13 @@
     <nav-bar class="home-nav"><template #center>购物车</template></nav-bar>
     <tab-control :title="['流行','商品','精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control" v-show="isTabFixed"></tab-control>
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp = "loadMore">
-      <home-swiper :banners="banners" @imgload="imgload"></home-swiper>
-      <recommend-view :recommends="recommends"></recommend-view>
-      <feature-view></feature-view>
-      <tab-control :title="['流行','商品','精选']" @tabClick="tabClick" ref="tabControl2"></tab-control>
-      <goods-list :goods="showGoods"></goods-list>
-
+      <template #>
+        <home-swiper :banners="banners" @imgload="imgload"></home-swiper>
+        <recommend-view :recommends="recommends"></recommend-view>
+        <feature-view></feature-view>
+        <tab-control :title="['流行','商品','精选']" @tabClick="tabClick" ref="tabControl2"></tab-control>
+        <goods-list :goods="showGoods"></goods-list>
+      </template>
     </scroll>
     <!-- 想要监听组件的点击必须加上native -->
     <!-- .native - 监听组件根元素的原生事件。 
@@ -124,6 +125,7 @@ export default {
       },
       imgload() {
         console.log(this.$refs.tabControl2.$el.offsetTop);
+        // $el拿到的是组件里面的根div
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
       //接受tabControl
