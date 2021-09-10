@@ -13,7 +13,7 @@
      </template>
     </scroll>
     <back-top @click.native="backClick" v-show="isShow"></back-top>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
 
   </div>
 </template>
@@ -155,6 +155,20 @@ export default {
       }else {
         this.isShow = false
       }
+    },
+    addToCart() {
+      console.log('加入购物车');
+      //获取购物车需要展示的商品信息
+      const product = {}
+      product.image = this.topImg[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid
+      product.count = 0
+
+      //将商品挂载到vuex
+      this.$store.dispatch('addCart',product)
     }
    
   }

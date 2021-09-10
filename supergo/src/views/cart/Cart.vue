@@ -1,13 +1,67 @@
 <template>
-  <h2>购物车</h2>
+  <div class="cart">
+    <nav-bar class="navbar">
+      <template #center>
+        购物车({{length}})
+      </template>
+    </nav-bar>
+    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load = "true" @pullingUp="loadMore">
+      <template #>
+       <cart-list></cart-list>
+      </template>
+     
+    </scroll>
+  
+
+  </div>
 </template>
 
 <script>
+import NavBar from 'components/common/navbar/NavBar.vue'
+import CartList from './childComps/CartList.vue'
+import {mapGetters} from 'vuex'
+
+import Scroll from 'components/common/scroll/Scroll.vue'
+
+
 export default {
-    name: "Cart"
+  name: "Cart",
+  components: { 
+    NavBar,
+    CartList,
+    Scroll,
+    
+  },
+  computed:{
+    //两种语法
+    //...mapGetters(['cartLength'])
+    ...mapGetters({
+      length:'cartLength'
+    })
+  },
+  activated() {
+    this.$refs.scroll.scroll.refresh()
+  },
+  methods:{
+     loadMore() {
+      this.$refs.scroll.scroll.finishPullUp()
+    },
+  }  
 }
 </script>
 
-<style>
-
+<style scoped>
+  .cart {
+    height: 100vh;
+  }
+  .navbar {
+    background-color: var(--color-tint);
+    color: #fff;
+    font-weight: 700;
+  }
+  .content {
+    overflow: hidden;
+     /* margin-top: 44px; */
+    height: calc(100% - 93px);
+  }
 </style>
