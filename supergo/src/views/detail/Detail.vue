@@ -6,13 +6,15 @@
         <detail-swiper :topimg="topImg"></detail-swiper>
         <detail-base-info :goods="goods"></detail-base-info>
         <detail-shop-info :shop="shop"></detail-shop-info>
-        <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
+        <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad" ref="goodsimg"></detail-goods-info>
         <detail-param-info :paramInfo="paramInfo" ref="param"></detail-param-info>
         <detail-comment-info :commentInfo="commentInfo" ref="comment"></detail-comment-info>
         <goods-list :goods="recommends" ref="recommend" class="goods"></goods-list>
      </template>
     </scroll>
-   
+    <back-top @click.native="backClick" v-show="isShow"></back-top>
+    <detail-bottom-bar></detail-bottom-bar>
+
   </div>
 </template>
 
@@ -26,8 +28,12 @@ import DetailGoodsInfo from './childComps/DetailGoodsInfo.vue';
 import DetailParamInfo from './childComps/DetailParamInfo.vue';
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue';
 import GoodsList from 'components/content/goods/GoodsList'
+import DetailBottomBar from './childComps/DetailBottomBar.vue';
+import BackTop from 'components/content/backTop/BackTop.vue';
 
 import Scroll from 'components/common/scroll/Scroll.vue'
+
+
 
 
 
@@ -45,13 +51,10 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList,
+    DetailBottomBar ,
+    BackTop,
 
     Scroll,
-   
-    
-    
-    
-  
   },
     data() {
     return {
@@ -64,7 +67,8 @@ export default {
       commentInfo:{},
       recommends:[],
       getThemeY:[],
-      currentIndex:0
+      currentIndex:0,
+      isShow:false
 
     }
   },
@@ -107,6 +111,10 @@ export default {
   
   },
   methods:{
+     backClick() {
+        console.log('点击了返回top');
+        this.$refs.scroll.scrollTo(0,0)
+      },
     loadMore() {
       this.$refs.scroll.scroll.finishPullUp()
     },
@@ -140,6 +148,13 @@ export default {
      
       
       }
+
+      //返回顶部按钮
+      if(positionY > this.$refs.goodsimg.$el.offsetTop) {
+        this.isShow = true
+      }else {
+        this.isShow = false
+      }
     }
    
   }
@@ -161,7 +176,7 @@ export default {
   }
   .contents {
      overflow: hidden;
-    height: calc(100% - 44px);
+    height: calc(100% - 102px);
      /* overflow: hidden;
     position: absolute;
     top: 44px;
