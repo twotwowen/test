@@ -9,9 +9,9 @@
       <template #>
        <cart-list></cart-list>
       </template>
-     
+    
     </scroll>
-  
+    <cart-bottom-bar></cart-bottom-bar>
 
   </div>
 </template>
@@ -19,9 +19,11 @@
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue'
 import CartList from './childComps/CartList.vue'
+import CartBottomBar from './childComps/CartBottomBar.vue'
 import {mapGetters} from 'vuex'
 
 import Scroll from 'components/common/scroll/Scroll.vue'
+
 
 
 export default {
@@ -29,6 +31,7 @@ export default {
   components: { 
     NavBar,
     CartList,
+    CartBottomBar,
     Scroll,
     
   },
@@ -62,6 +65,6 @@ export default {
   .content {
     overflow: hidden;
      /* margin-top: 44px; */
-    height: calc(100% - 93px);
+    height: calc(100% - 93px - 40px);
   }
 </style>

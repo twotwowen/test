@@ -26,7 +26,7 @@ export default {
     border: 2px solid #aaa;
   }
   .check {
-    border-color: orchid;
-    background-color: orchid;
+    border-color: orangered;
+    background-color: orangered;
   }
 </style>
