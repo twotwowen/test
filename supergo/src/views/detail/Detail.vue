@@ -14,6 +14,7 @@
     </scroll>
     <back-top @click.native="backClick" v-show="isShow"></back-top>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+    <toast :message="message" :show="show"></toast>
 
   </div>
 </template>
@@ -33,10 +34,7 @@ import BackTop from 'components/content/backTop/BackTop.vue';
 
 import Scroll from 'components/common/scroll/Scroll.vue'
 
-
-
-
-
+import Toast from 'components/common/toast/Toast.vue'
 
 
 
@@ -55,6 +53,8 @@ export default {
     BackTop,
 
     Scroll,
+    Toast,
+    
   },
     data() {
     return {
@@ -68,7 +68,9 @@ export default {
       recommends:[],
       getThemeY:[],
       currentIndex:0,
-      isShow:false
+      isShow:false,
+      message:'',
+      show:false
 
     }
   },
@@ -168,7 +170,16 @@ export default {
       product.count = 0
 
       //将商品挂载到vuex
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch('addCart',product).then((res) =>{
+        this.show=true
+        this.message=res
+        console.log(res)
+        
+        setTimeout(() => {
+          this.message=''
+          this.show=false
+        },1500)
+      })
     }
    
   }
