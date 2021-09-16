@@ -1,7 +1,7 @@
 ## _supergo_   一个移动端商城app (仿B站coderwhy老师的项目，感谢)
 
 ### 使用技术栈 
-```vue.js```  ```vue-cli3```  ```vue-router``` ```vue-x``` ```axios``` ```Promise``` ```flex``` ```webpack``` ```ES6```
+```vue.js```  ```vue-cli3```  ```vue-router``` ```vuex``` ```axios``` ```Promise``` ```flex``` ```webpack``` ```ES6```
 
 ---
 
