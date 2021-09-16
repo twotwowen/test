@@ -3,6 +3,8 @@
 ### 使用技术栈 
 ```vue.js```  ```vue-cli3```  ```vue-router``` ```vue-x``` ```axios``` ```Promise``` ```flex``` ```webpack``` ```ES6```
 
+---
+
 ### 已完成功能(首页，详情页，购物车)
 - [√]首页下拉加载更多
 - [√]tabbar路由跳转
@@ -22,5 +24,8 @@
 - [√]fastclick 解决300ms延迟
 - __.  .  .__
 
+---
+
 ### 项目展示
 ![show](/img/show.gif)
+
