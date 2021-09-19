@@ -15,7 +15,7 @@
 //probe监测
 //0，1都是不监测实时的位置
 //2：在手指滚动的过程中监测，手指离开后的惯性滚动过程中不监测
-
+//测试测试
 import BScroll from 'better-scroll'
 
 
